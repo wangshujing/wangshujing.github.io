@@ -41,6 +41,10 @@
       var panelNumber = '2'
       var currentModel = "1"
       var currentPanel = "1"
+      var loc = localStorage.getItem("a") || '-1';
+      if(loc != '-1') {
+        alert(loc)
+      }
       if(parseInt(panelNumber) != 0) {
         for(let i = 0; i < parseInt(panelNumber); i++) {
           let str = "<li id='panelId"+(i+1)+"'><a href='#tab"+(i+1)+"' data-toggle='tab' onclick='changePanel(\""+ (i+1)+"\")'>数据"+(i+1)+"</a></li>"
@@ -55,6 +59,7 @@
       function changeModel(value) {
         currentModel = value
         alert(value)
+        locastorage.setItem("a",value);
         // getData()
       }
       function changePanel(value) {
