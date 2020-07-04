@@ -41,7 +41,7 @@
       var panelNumber = '2'
       var currentModel = "1"
       var currentPanel = "1"
-      var loc = localStorage.getItem("a") || '-1';
+      let loc = localStorage.getItem("a") || '-1'
       if(loc != '-1') {
         alert(loc)
       }
@@ -59,7 +59,7 @@
       function changeModel(value) {
         currentModel = value
         alert(value)
-        locastorage.setItem("a",value);
+        localStorage.setItem("a",value);
         // getData()
       }
       function changePanel(value) {
