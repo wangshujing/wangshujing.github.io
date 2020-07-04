@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>京东评价</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet"><link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h3>京东评价</h3>
+      <div class="row" style="margin-top: 20px;">
+        <form class="form-inline">
+          <div class="col-xs-6 form-group">
+            <label for="formModel">模式：</label>
+            <select class="form-control" id="formModel" onchange="changeModel(this.options[this.options.selectedIndex].value)">
+              <option value="1">模式1</option>
+              <option value="2">模式2</option>
+            </select>
+          </div>
+          <div class="col-xs-6 form-group">
+            <label for="roundSecond">每次轮询间隔（s）：</label>
+            <input type="text" class="form-control" id="roundSecond" value="20">
+          </div>
+        </form>         
+      </div>
+      <hr style="margin-top: 0.5em;margin-bottom: 0.5em;" />
+      <div class="row" id="panel" style="margin: 0.1em;">
+        <ul class="nav nav-tabs" id="panelNav">
+        </ul>
+        <!-- 选项卡相对应的内容 -->
+        <div class="tab-content" id="tabContent" style="margin-top: 0.5em;">
+          
+        </div>
+      </div>
+      
+    </div>
+    <div id="noExcel" style="display: none; text-align: center; margin: auto;">暂无excel</div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.js"></script>
+    <script>
+      var panelNumber = '2'
+      var currentModel = "1"
+      var currentPanel = "1"
+      if(parseInt(panelNumber) != 0) {
+        for(let i = 0; i < parseInt(panelNumber); i++) {
+          let str = "<li id='panelId"+(i+1)+"'><a href='#tab"+(i+1)+"' data-toggle='tab' onclick='changePanel(\""+ (i+1)+"\")'>数据"+(i+1)+"</a></li>"
+          $('#panelNav').append(str)
+          $('#panelId' + currentPanel).addClass('active')
+        }
+      } else {
+        $('#panel').hide()
+        $('#noExcel').show()
+      }
+      // changeModel(currentModel)
+      function changeModel(value) {
+        currentModel = value
+        // getData()
+      }
+      function changePanel(value) {
+        currentPanel = value
+      }
+      function getData() {
+        $('#tabContent').empty()
+        $.ajax({
+          type: "GET",
+          url: '/getData',
+          contentType: "application/json; charset=utf-8",
+          data: {model: currentModel},
+          success: function (resp) {
+            let res = JSON.parse(resp)
+            if(res.status === 'success') {
+              let data = res.data || []
+              if(data.length > 0) {
+                for(let i = 0; i < data.length; i++) {
+                  let str = " <div class='tab-pane' id='tab"+(i+1)+"'><div class='panel panel-info'>"
+                    +"<div class='panel-heading'>待处理序号：<span id='index"+(i+1)+"'></span></div>"
+                    +"<ul class='list-group'>"
+                    +"<li class='list-group-item'>商品：<span id='name"+(i+1)+"'></span></li>"
+                    +"<li class='list-group-item'>文案：<span id='content"+(i+1)+"'>"+(i+1)+"</span></li></ul></div>"
+                    +"<div class='row'><div class='col-xs-6 col-md-6' style='text-align: center;'>"
+                    +"<button type='button' class='btn btn-info'>从首条开始</button></div>"
+                    +"<div class='col-xs-6 col-md-6' style='text-align: center;'>"
+                    +"<button type='button' class='btn btn-info'>下一条</button></div></div></div>"
+                    
+                  $('#tabContent').append(str)
+                  $('#tab' + currentPanel).addClass('active')
+                  // 填充数据
+                  if(data[i].length > 0) {
+                    for(let j = 0; j < data[i].length; j++) {
+                      if(data[i][j]) {
+                        if(data[i][j].keyword === 'Y') {
+                          
+                        }
+                      }
+                    }
+
+                  } else {
+
+                  }
+                }
+              }
+            } else {
+            }
+          },
+          error: function (err) {
+            
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
