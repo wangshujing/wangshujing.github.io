@@ -44,6 +44,7 @@
       let loc = localStorage.getItem("a") || '-1'
       if(loc != '-1') {
         alert(loc)
+        $('#formModel').val(loc)
       }
       if(parseInt(panelNumber) != 0) {
         for(let i = 0; i < parseInt(panelNumber); i++) {
